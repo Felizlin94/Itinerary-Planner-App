@@ -1,0 +1,178 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+
+  .singleAreaMode {
+    height: 98vh;
+    width: 94%;
+    margin-top: 1vh;
+
+    .subArea {
+      height: 97%;
+    }
+  }
+
+  .doubleAreaMode {
+    height: 98vh;
+    width: 94%;
+    margin-top: 1vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    .area1 {
+      display: flex;
+      flex-direction: column;
+      height: 49%;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .divider {
+      height: 1px;
+      width: 94%;
+      border-bottom: 1px rgb(27, 98, 152) dashed;
+      margin: 3px auto;
+    }
+
+    .area2 {
+      display: flex;
+      flex-direction: column;
+      height: 49%;
+      width: 100%;
+      overflow: hidden;
+    }
+  }
+  .logoutBtn {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+    position: fixed;
+    top: 11px;
+    right: 11px;
+
+    img {
+      width: 24px;
+      opacity: 0.6;
+    }
+    span {
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      visibility: hidden;
+      color: rgb(27, 98, 152);
+    }
+  }
+  img:hover + span {
+    opacity: 1;
+    cursor: default;
+    visibility: visible;
+  }
+  img:hover {
+    cursor: pointer;
+  }
+}
+
+.subArea {
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+.subArea::-webkit-scrollbar {
+  width: 0px;
+}
+
+.buttons {
+  min-height: 3vh;
+  width: 94%;
+  margin: 0 auto;
+  padding: 3px 0;
+  display: flex;
+  justify-content: space-around;
+
+  .button {
+    display: flex;
+    border: 1px solid rgb(155, 95, 0);
+    color: rgb(155, 95, 0);
+    border-radius: 3px;
+    min-width: max-content;
+    min-height: max-content;
+    padding: 0.3vh 2vw;
+    font-size: 12px;
+    align-items: center;
+    justify-content: center;
+    margin: auto 0.8vw;
+  }
+
+  .button:hover {
+    cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .container {
+    width: 98%;
+  }
+}
+
+@media screen and (min-width: 720px) {
+  .container {
+    height: 100vh;
+
+    .singleAreaMode {
+      width: 97%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .doubleAreaMode {
+      width: 97%;
+      display: flex;
+      flex-direction: row;
+
+      .area1 {
+        width: 48.5%;
+        height: 100%;
+      }
+
+      .divider {
+        width: 1px;
+        height: 90vh;
+        border-right: 2px rgb(27, 98, 152) dashed;
+        margin: auto;
+      }
+
+      .area2 {
+        width: 48.5%;
+        height: 100%;
+        flex-direction: column-reverse;
+      }
+    }
+  }
+  .subArea {
+    width: 100%;
+    height: 100%;
+  }
+  .buttons {
+    width: 100%;
+    max-width: max-content;
+    height: 5vh;
+    justify-content: space-between;
+
+    .button {
+      height: 4vh;
+      width: auto;
+      padding: 0.1vh 0.4vw;
+      font-weight: 500;
+      border: 1.6px solid;
+      margin: auto 0.8vw;
+    }
+  }
+}
+// set divider color

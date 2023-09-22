@@ -1,0 +1,127 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+
+  p {
+    color: rgb(15, 84, 187);
+    span {
+      font-weight: 500;
+    }
+  }
+
+  .chatArea {
+    margin-top: 6px;
+    font-size: 16px;
+    overflow: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+
+    .selfMessage {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      margin-bottom: 8px;
+
+      .message {
+        width: fit-content;
+        padding: 3px 8px;
+        border-radius: 5px;
+        border: 0.5px solid rgb(237, 209, 119);
+        background-color: rgb(255, 255, 255);
+      }
+
+      .sendingTime {
+        color: gray;
+        font-size: 12px;
+        margin-right: 3px;
+        margin-top: 3px;
+      }
+    }
+
+    .friendMessage {
+      display: flex;
+      align-items: flex-start;
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        background-color: rgb(243, 174, 173);
+        border-radius: 50%;
+      }
+
+      .messageAndTime {
+        margin: 3px 0 0 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .message {
+          background-color: rgb(255, 230, 230);
+          width: fit-content;
+          padding: 3px 8px;
+          border-radius: 5px;
+          border: 0.5px solid rgb(237, 209, 119);
+        }
+
+        .sendingTime {
+          color: gray;
+          font-size: 12px;
+          margin-left: 3px;
+          margin-top: 3px;
+        }
+      }
+    }
+  }
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .chatArea::-webkit-scrollbar {
+    width: 0px;
+  }
+}
+
+.launchArea {
+  border: 2px solid rgb(49, 46, 46);
+  border-radius: 6px;
+  margin-top: 20px;
+  margin-bottom: 0;
+  padding: 5px 0;
+  height: 32px;
+  width: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  input {
+    margin: auto 10px;
+    width: 230px;
+    height: 26px;
+    border: 1px solid rgb(124, 69, 7);
+    opacity: 0.5;
+  }
+
+  .sendMessage {
+    margin-right: 7px;
+  }
+}
+
+@media screen and (min-width: 720px) {
+  .container {
+
+    .chatArea {
+      width: 100%;
+    }
+    .launchArea {
+            width: 99%;
+      input {
+    width: 60%;
+      }
+    }
+
+  }
+}

@@ -1,0 +1,145 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+
+  .navbar {
+    display: flex;
+    height: 54px;
+    width: 94%;
+
+    .listEntryArea {
+      display: flex;
+    }
+
+    .searchBar {
+      width: 40%;
+      height: 30px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-left: 3px;
+
+      input {
+        width: 100%;
+        height: 21px;
+        background-image: linear-gradient(
+          45deg,
+          rgb(231, 243, 210),
+          rgb(194, 244, 255)
+        );
+        margin-right: 7px;
+      }
+
+      img {
+        height: 20px;
+        margin-left: 2px;
+      }
+    }
+  }
+  .listArea {
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+    overflow: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+  .listArea::-webkit-scrollbar {
+    width: 0px;
+  }
+}
+
+.listEntryButton {
+  width: 36px;
+  height: 50px;
+
+  .button {
+    border: 2px solid black;
+    border-radius: 3px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(227, 246, 248);
+    opacity: 0.8;
+
+    img {
+      width: 70%;
+      height: 70%;
+    }
+  }
+  .displaying {
+    background-color: rgb(161, 241, 229);
+  }
+
+  p {
+    width: max-content;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 3px 0;
+    visibility: hidden;
+    color: rgb(22, 167, 167);
+  }
+
+  .button:hover + p {
+    visibility: visible;
+  }
+}
+.placeBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 42px;
+  width: 320px;
+  margin: auto;
+
+  .placeBox {
+    border: 1px solid black;
+    border-radius: 3px;
+    width: 270px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(255, 255, 255);
+
+    .placeTitle {
+      width: max-content;
+      height: fit-content;
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 8px;
+    }
+    .barFunctions {
+      display: flex;
+      justify-content: space-between;
+      width: 33px;
+      margin-right: 8px;
+
+      .showContent {
+        font-size: 7px;
+        width: 15px;
+      }
+      .toEdit {
+        width: 15px;
+      }
+    }
+  }
+  img {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+}
+
+@media screen and (min-width: 720px) {
+}

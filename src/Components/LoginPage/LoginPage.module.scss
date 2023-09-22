@@ -1,0 +1,168 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 94%;
+  height: 100vh;
+  padding-top: 20vh;
+  margin: auto;
+
+  .loginArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .inputInfo {
+      display: flex;
+      justify-content: end;
+      margin: 5px auto;
+      height: 36px;
+      width: 100%;
+      color: rgb(15, 146, 182);
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+
+      input {
+        width: 160px;
+        height: 24px;
+        margin-left: 10px;
+      }
+    }
+
+    .loginBtn {
+      width: 150px;
+      height: 48px;
+      font-size: 17px;
+      font-weight: 500;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 16px;
+      margin-bottom: 70px;
+      border-radius: 3px;
+      color: rgb(15, 146, 182);
+      background-color: #ffffff;
+      border: 1px #369bba solid;
+      box-shadow: 0 8px #c8c8c8;
+    }
+    .loginBtn:hover {
+      background-image: linear-gradient(
+        90deg,
+        rgb(160, 211, 227),
+        rgb(192, 235, 237)
+      );
+      cursor: pointer;
+    }
+    .loginBtn:active {
+      background-image: linear-gradient(
+        90deg,
+        rgb(132, 188, 205),
+        rgb(158, 219, 222)
+      );
+      color: rgb(255, 255, 255);
+      box-shadow: 0 3px #c7c6c6;
+      transform: translateY(5px);
+    }
+  }
+  .createAccountArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 8vh;
+
+    .toCreateAccount {
+      width: 260px;
+      height: 48px;
+      font-size: 17px;
+      font-weight: 500;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+      border-radius: 3px;
+      color: #d7a632;
+    }
+    .toCreateAccount:hover {
+      color: #ec8129;
+      cursor: pointer;
+    }
+    .createUserInfo {
+      border: 2px #a06d21 dotted;
+      border-radius: 3px;
+      width: 320px;
+      height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+
+      div {
+        margin: 5px 20px 3px auto;
+        width: 100%;
+        height: 36px;
+        color: #a06d21;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+
+        input {
+          width: 150px;
+          height: 24px;
+          margin-left: 5px;
+        }
+      }
+
+      button {
+        margin-top: 10px;
+        width: 140px;
+        height: 30px;
+        background: rgb(237, 220, 194);
+        font-weight: 500;
+        font-size: 16px;
+        color: #50350e;
+        border-radius: 6px;
+        border: 1px solid #875206;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .container {
+    .loginArea {
+      width: 270px;
+
+      .inputInfo {
+        input {
+          width: 140px;
+          margin-right: 16px;
+        }
+      }
+    }
+    .createAccountArea {
+      margin-top: 5vh;
+      .createUserInfo {
+        width: 270px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 720px) {
+  .container {
+    .loginArea {
+      .loginBtn {
+        height: 8vh;
+        margin-bottom: 7vh;
+      }
+    }
+
+    .createAccountArea {
+      margin-top: 1vh;
+    }
+  }
+}
