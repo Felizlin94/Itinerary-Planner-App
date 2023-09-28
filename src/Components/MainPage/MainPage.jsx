@@ -2,31 +2,31 @@ import { useState } from "react";
 import styles from "./MainPage.module.scss";
 import PocketListArea from "../PocketListArea/PocketListArea";
 import ItineraryArea from "../ItineraryArea/ItineraryArea";
-import GmapArea from "../GmapArea/GmapArea";
+import GoogleMapsArea from "../GoogleMapsArea/GoogleMapsArea";
 import Chatroom from "../Chatroom/Chatroom";
 import logout from "../../assets/box-arrow-right.svg";
 
-function MainPage({ currentAccount, onLogoutClick }) {
-  const [area1, setArea1] = useState("PocketListArea");
-  const [area2, setArea2] = useState("ItineraryArea");
+function MainPage({ onLogoutClick }) {
+  const [area1, setArea1] = useState("GoogleMapsArea");
+  const [area2, setArea2] = useState("PocketListArea");
 
   return (
     <div className={styles.container}>
       {area1 === area2 ? (
         <div className={styles.singleAreaMode}>
-          <SubArea area={area1} currentAccount={currentAccount} />
+          <SubArea area={area1} />
           <Buttons setArea={setArea2} />
         </div>
       ) : (
         <div className={styles.doubleAreaMode}>
           <div className={styles.area1}>
-            <SubArea area={area1} currentAccount={currentAccount} />
+            <SubArea area={area1} />
             <Buttons setArea={setArea1} />
           </div>
           <div className={styles.divider}></div>
           <div className={styles.area2}>
             <Buttons setArea={setArea2} />
-            <SubArea area={area2} currentAccount={currentAccount} />
+            <SubArea area={area2} />
           </div>
         </div>
       )}
@@ -38,17 +38,13 @@ function MainPage({ currentAccount, onLogoutClick }) {
   );
 }
 
-function SubArea({ area, currentAccount }) {
+function SubArea({ area }) {
   return (
     <div className={styles.subArea}>
-      {area === "PocketListArea" && (
-        <PocketListArea currentAccount={currentAccount} />
-      )}
-      {area === "ItineraryArea" && (
-        <ItineraryArea currentAccount={currentAccount} />
-      )}
-      {area === "GmapArea" && <GmapArea />}
-      {area === "Chatroom" && <Chatroom currentAccount={currentAccount} />}
+      {area === "PocketListArea" && <PocketListArea />}
+      {area === "ItineraryArea" && <ItineraryArea />}
+      {area === "GoogleMapsArea" && <GoogleMapsArea />}
+      {area === "Chatroom" && <Chatroom />}
     </div>
   );
 }
@@ -63,8 +59,8 @@ function Buttons({ setArea }) {
     console.log("ItineraryArea");
   }
   function handlethe3Click() {
-    setArea("GmapArea");
-    console.log("GmapArea");
+    setArea("GoogleMapsArea");
+    console.log("GoogleMapsArea");
   }
   function handlethe4Click() {
     setArea("Chatroom");

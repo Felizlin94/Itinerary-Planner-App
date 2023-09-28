@@ -3,56 +3,90 @@ import iconSendMessage from "../../assets/sendMessage.svg";
 import addImage from "../../assets/addImage.svg";
 import addEmoji from "../../assets/addEmoji.svg";
 
-import { useEffect, useState } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useContext, useEffect, useState } from "react";
+import ScrollToBottom from "react-scroll-to-bottom";
+import { MessageContext } from "../../contexts/MessageContext";
+import { useUserContext } from "../../contexts/UserAccountContext";
 
-const GET_MESSAGES = gql`
-  query {
-    historicalMessages {
-      Username
-      Message
-      SendingTime
-    }
-  }
-`;
-
-function Chatroom({ currentAccount }) {
-  const [messageBase, setMessageBase] = useState([]);
-
-  const { loading, error, data } = useQuery(GET_MESSAGES);
+function Chatroom() {
+  const {
+    messageBase,
+    setMessageBase,
+    newMessage,
+    setNewMessage,
+    sendMessage,
+    messagesData,
+    subscriptionMessagesData,
+    newMessagePack,
+  } = useContext(MessageContext);
+  const { currentAccount } = useUserContext();
 
   useEffect(() => {
-    if (data) {
-      setMessageBase(data.historicalMessages);
+    if (messagesData) {
+      setMessageBase(messagesData.historicalMessages);
     }
-  }, [data]);
+  }, [messagesData, setMessageBase]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
+  useEffect(() => {
+    if (subscriptionMessagesData) {
+      setMessageBase((prevMessages) => [
+        ...prevMessages,
+        subscriptionMessagesData.messageAdded,
+      ]);
+    }
+  }, [subscriptionMessagesData, setMessageBase]);
+
+  function handleSendMessage() {
+    if (newMessage) {
+      sendMessage({
+        variables: newMessagePack,
+      })
+        .then(() => {
+          setNewMessage("");
+        })
+        .catch((error) => {
+          console.error("Error sending message:", error);
+        });
+      console.log("newMessagePack", newMessagePack);
+    }
+  }
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSendMessage();
+    }
+  };
 
   return (
     <div className={styles.container}>
       <p>
-        <span>{currentAccount.Username}</span> in <span>Chatroom</span>
+        <span>{currentAccount.username}</span> in <span>Chatroom</span>
       </p>
-      <div className={styles.chatArea}>
-        {messageBase.map((messages, index) => {
-          return messages.Username === currentAccount.Username ? (
+      <ScrollToBottom className={styles.chatArea}>
+        {messageBase.map((messages) => {
+          return messages.username === currentAccount.username ? (
             <SelfMessage
-              key={index}
-              message={messages.Message}
-              sendingTime={messages.SendingTime}
+              key={messages.messageId}
+              message={messages.message}
+              sendingTime={messages.sendingTime}
             />
           ) : (
             <FriendMessage
-              key={index}
-              message={messages.Message}
-              sendingTime={messages.SendingTime}
+              key={messages.messageId}
+              FriendName={messages.username}
+              message={messages.message}
+              sendingTime={messages.sendingTime}
             />
           );
         })}
-      </div>
-      <LaunchArea />
+      </ScrollToBottom>
+      <LaunchArea
+        newMessage={newMessage}
+        setNewMessage={setNewMessage}
+        onSendMessage={handleSendMessage}
+        onKeyDown={handleKeyPress}
+      />
     </div>
   );
 }
@@ -65,10 +99,18 @@ function SelfMessage({ message, sendingTime }) {
     </div>
   );
 }
-function FriendMessage({ message, sendingTime }) {
+function FriendMessage({ FriendName, message, sendingTime }) {
+  const [avatar, setAvatar] = useState("");
+
+  useEffect(() => {
+    import(`../../assets/${FriendName}.png`)
+      .then((module) => setAvatar(module.default))
+      .catch(() => setAvatar(require("../../assets/Kirby.png")));
+  }, [FriendName]);
+
   return (
     <div className={styles.friendMessage}>
-      <div className={styles.avatar}> </div>
+      <img className={styles.avatar} src={avatar} alt={FriendName} />
       <div className={styles.messageAndTime}>
         <div className={styles.message}>{message}</div>
         <div className={styles.sendingTime}>{sendingTime}</div>
@@ -77,13 +119,23 @@ function FriendMessage({ message, sendingTime }) {
   );
 }
 
-function LaunchArea() {
+function LaunchArea({ newMessage, setNewMessage, onSendMessage, onKeyDown }) {
   return (
     <div className={styles.launchArea}>
-      <img className={styles.addImage} src={addImage} alt="avatar" />
-      <input type="text" alt="not available yet..." />
-      <img className={styles.sendMessage} src={iconSendMessage} alt="avatar" />
-      <img className={styles.addEmoji} src={addEmoji} alt="avatar" />
+      <img className={styles.addImage} src={addImage} alt="addImage" />
+      <input
+        type="text"
+        value={newMessage}
+        onChange={(e) => setNewMessage(e.target.value)}
+        onKeyDown={onKeyDown}
+      />
+      <img
+        className={styles.sendMessage}
+        src={iconSendMessage}
+        alt="iconSendMessage"
+        onClick={onSendMessage}
+      />
+      <img className={styles.addEmoji} src={addEmoji} alt="addEmoji" />
     </div>
   );
 }

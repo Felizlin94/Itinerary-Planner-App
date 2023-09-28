@@ -1,18 +1,58 @@
 import styles from "./LoginPage.module.scss";
+import { useEffect, useState } from "react";
+import { useUserContext } from "../../contexts/UserAccountContext";
 
-import { useState } from "react";
-
-function LoginPage({
-  onLoginClick,
-  userAccounts,
-  username,
-  password,
-  onUsernameChange,
-  onPasswordChange,
-}) {
+function LoginPage({ setPage }) {
   const [showCreateUserArea, setShowCreateUserArea] = useState(false);
-  const [newUsername, setNewUsername] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+
+  const {
+    userAccounts,
+    setUserAccounts,
+    userAccountsData,
+    setCurrentAccount,
+    onLoginUsername,
+    setOnLoginUsername,
+    onLoginPassword,
+    setOnLoginPassword,
+    newUsername,
+    setNewUsername,
+    newPassword,
+    setNewPassword,
+    createUser,
+    newUserAccount,
+  } = useUserContext();
+
+  useEffect(() => {
+    if (userAccountsData) {
+      setUserAccounts(userAccountsData.defaultUserAccounts);
+    }
+  }, [userAccountsData, setUserAccounts]);
+
+  function handleLoginClick() {
+    const matchedAccount = userAccounts.find(
+      (account) =>
+        account.username === onLoginUsername &&
+        account.password === onLoginPassword
+    );
+
+    if (matchedAccount) {
+      setCurrentAccount(matchedAccount);
+      console.log("Login Success, Welcome", matchedAccount.username);
+      setTimeout(() => {
+        setPage("mainPage");
+      }, 50);
+    } else {
+      alert("Invalid Username or Password");
+    }
+  }
+
+  function handleUsernameChange(event) {
+    setOnLoginUsername(event.target.value);
+  }
+
+  function handlePasswordChange(event) {
+    setOnLoginPassword(event.target.value);
+  }
 
   function handleNewUsernameChange(event) {
     setNewUsername(event.target.value);
@@ -24,15 +64,20 @@ function LoginPage({
 
   function handleCreateAccountClick() {
     if (newUsername.length && newPassword.length !== 0) {
-      userAccounts.push({
-        Username: newUsername,
-        Password: newPassword,
-      });
-      setShowCreateUserArea(false);
-      setNewUsername("");
-      setNewPassword("");
-    } else {
-      return;
+      createUser({
+        variables: newUserAccount,
+      })
+        .then(() => {
+          userAccounts.push(newUserAccount);
+          setShowCreateUserArea(false);
+          setNewUsername("");
+          setNewPassword("");
+          setOnLoginUsername(newUserAccount.username);
+          setOnLoginPassword(newUserAccount.password);
+        })
+        .catch((error) => {
+          console.error("Error creating account:", error);
+        });
     }
   }
 
@@ -44,11 +89,11 @@ function LoginPage({
   return (
     <div className={styles.container}>
       <LoginArea
-        onLoginClick={onLoginClick}
-        username={username}
-        password={password}
-        onUsernameChange={onUsernameChange}
-        onPasswordChange={onPasswordChange}
+        onLoginClick={handleLoginClick}
+        onLoginUsername={onLoginUsername}
+        onLoginPassword={onLoginPassword}
+        onUsernameChange={handleUsernameChange}
+        onPasswordChange={handlePasswordChange}
         onLoginArea={handleOnLoginArea}
       />
       <CreateAccountArea
@@ -66,8 +111,8 @@ function LoginPage({
 
 function LoginArea({
   onLoginClick,
-  username,
-  password,
+  onLoginUsername,
+  onLoginPassword,
   onUsernameChange,
   onPasswordChange,
   onLoginArea,
@@ -79,7 +124,7 @@ function LoginArea({
         <input
           type="text"
           placeholder="Username"
-          value={username}
+          value={onLoginUsername}
           onChange={onUsernameChange}
           autoFocus
         />
@@ -89,7 +134,7 @@ function LoginArea({
         <input
           type="password"
           placeholder="Password"
-          value={password}
+          value={onLoginPassword}
           onChange={onPasswordChange}
         />
       </div>

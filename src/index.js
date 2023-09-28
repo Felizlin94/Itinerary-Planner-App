@@ -9,6 +9,9 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 
+import { UserProvider } from "./contexts/UserAccountContext";
+import { MessageProvider } from "./contexts/MessageContext";
+
 const httpLink = new HttpLink({
   uri: process.env.REACT_APP_HTTP_URI,
 });
@@ -39,8 +42,12 @@ const client = new ApolloClient({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ApolloProvider client={client}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <UserProvider>
+      <MessageProvider>
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+      </MessageProvider>
+    </UserProvider>
   </ApolloProvider>
 );

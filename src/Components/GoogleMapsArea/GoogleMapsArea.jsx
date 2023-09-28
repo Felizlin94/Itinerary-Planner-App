@@ -1,11 +1,11 @@
-import styles from "./GmapArea.module.scss";
-import { useState, useRef } from "react";
+import styles from "./GoogleMapsArea.module.scss";
 import { useQuery, gql } from "@apollo/client";
+import { useState, useRef } from "react";
 import {
-  GoogleMap,
+  // GoogleMap,
   LoadScript,
   StandaloneSearchBox,
-  Marker,
+  // Marker,
 } from "@react-google-maps/api";
 
 const GET_GOOGLE_MAPS_API_KEY = gql`
@@ -16,7 +16,7 @@ const GET_GOOGLE_MAPS_API_KEY = gql`
   }
 `;
 
-function GmapArea() {
+function GoogleMapsArea() {
   const {
     loading: apiKeyLoading,
     error: apiKeyError,
@@ -26,56 +26,57 @@ function GmapArea() {
   if (apiKeyLoading) return <p>Loading...</p>;
   if (apiKeyError) return <p>Error : {apiKeyError.message}</p>;
 
-  const googleMapsAPIKey = apiKeyData.googleMapsAPIKey[0].apiKey;
+  const MyGoogleMapsAPIKey = apiKeyData.googleMapsAPIKey[0].apiKey;
 
   return (
     <div className={styles.container}>
       Google Map Area
       <div className={styles.mapArea}>
-        <MapComponent apiKey={googleMapsAPIKey} />
+        <MapComponent apiKey={MyGoogleMapsAPIKey} />
       </div>
     </div>
   );
 }
 
-const containerStyle = {
-  width: "100%",
-  height: "400px",
-};
+// const containerStyle = {
+//   width: "100%",
+//   height: "400px",
+// };
 
-const center = {
-  lat: 37.7749,
-  lng: -122.4194,
-};
+// const center = {
+//   lat: 37.7749,
+//   lng: -122.4194,
+// };
 
 function MapComponent({ apiKey }) {
   const [selected, setSelected] = useState(null);
-  const [markers, setMarkers] = useState([]);
+  // const [markers, setMarkers] = useState([]);
 
   const searchBoxRef = useRef(null);
 
   const onPlacesChanged = () => {
     const places = searchBoxRef.current.getPlaces();
 
-    const newMarkers = places.map((place) => ({
-      position: place.geometry.location,
-    }));
+    // const newMarkers = places.map((place) => ({
+    //   position: place.geometry.location,
+    // }));
 
-    setMarkers(newMarkers);
+    // setMarkers(newMarkers);
 
-    if (newMarkers.length === 1) {
-      setSelected(places[0]);
-    }
+    // if (newMarkers.length === 1) {
+    setSelected(places[0]);
+    // }
   };
 
   return (
     <LoadScript googleMapsApiKey={apiKey} libraries={["places"]}>
-      <GoogleMap
+      <div className={styles.maptrying}>
+        {/* <GoogleMap
         id="searchbox-example"
         mapContainerStyle={containerStyle}
         zoom={10}
         center={center}
-      >
+      > */}
         <StandaloneSearchBox
           onLoad={(ref) => (searchBoxRef.current = ref)}
           onPlacesChanged={onPlacesChanged}
@@ -101,23 +102,26 @@ function MapComponent({ apiKey }) {
             }}
           />
         </StandaloneSearchBox>
-        {markers.map((marker, index) => (
+        {/* {markers.map((marker, index) => (
           <Marker
             key={index}
             position={marker.position}
             onClick={() => setSelected(marker)}
           />
-        ))}
-      </GoogleMap>
-      {selected && (
+        ))} */}
+        {/* </GoogleMap> */}
         <div>
-          <h2>{selected.name}</h2>
-          <p>{selected.formatted_address}</p>
-          {/* Add more details here as needed */}
+          {selected && (
+            <div>
+              <h4>{selected.name}</h4>
+              <p>{selected.types}</p>
+              <p>{selected.url}</p>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </LoadScript>
   );
 }
 
-export default GmapArea;
+export default GoogleMapsArea;

@@ -36,7 +36,7 @@ function PocketListArea() {
           />
           <ListEntryButtons svg={train} listName="Transportation" />
           <ListEntryButtons svg={foodndrinks} listName="Food & Drinks" />
-          <ListEntryButtons svg={house} listName="Accommodation" />
+          <ListEntryButtons svg={house} listName="Lodgings" />
           <ListEntryButtons svg={othersIcon} listName="Others" />
         </div>
         <div className={styles.searchBar}>
