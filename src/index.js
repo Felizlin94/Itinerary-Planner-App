@@ -11,6 +11,7 @@ import { createClient } from "graphql-ws";
 
 import { UserProvider } from "./contexts/UserAccountContext";
 import { MessageProvider } from "./contexts/MessageContext";
+import { PocketListProvider } from "./contexts/PocketListContext";
 
 const httpLink = new HttpLink({
   uri: process.env.REACT_APP_HTTP_URI,
@@ -44,9 +45,11 @@ root.render(
   <ApolloProvider client={client}>
     <UserProvider>
       <MessageProvider>
-          <React.StrictMode>
-            <App />
-          </React.StrictMode>
+          <PocketListProvider>
+            <React.StrictMode>
+              <App />
+            </React.StrictMode>
+          </PocketListProvider>
       </MessageProvider>
     </UserProvider>
   </ApolloProvider>

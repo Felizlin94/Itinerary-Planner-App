@@ -1,46 +1,32 @@
 import styles from "./GoogleMapsArea.module.scss";
-import { useQuery, gql } from "@apollo/client";
-import { useState, useRef } from "react";
+import attractionsIcon from "../../assets/attractions.svg";
+import foodndrinks from "../../assets/foodndrinks.svg";
+import othersIcon from "../../assets/othersIcon.svg";
+import house from "../../assets/house.svg";
+import train from "../../assets/train.svg";
+
+import { useRef } from "react";
 import {
   // GoogleMap,
-  LoadScript,
   StandaloneSearchBox,
   // Marker,
 } from "@react-google-maps/api";
-
-const GET_GOOGLE_MAPS_API_KEY = gql`
-  query {
-    googleMapsAPIKey {
-      apiKey
-    }
-  }
-`;
+import { usePocketListContext } from "../../contexts/PocketListContext";
 
 function GoogleMapsArea() {
-  const {
-    loading: apiKeyLoading,
-    error: apiKeyError,
-    data: apiKeyData,
-  } = useQuery(GET_GOOGLE_MAPS_API_KEY);
-
-  if (apiKeyLoading) return <p>Loading...</p>;
-  if (apiKeyError) return <p>Error : {apiKeyError.message}</p>;
-
-  const MyGoogleMapsAPIKey = apiKeyData.googleMapsAPIKey[0].apiKey;
-
   return (
     <div className={styles.container}>
       Google Map Area
       <div className={styles.mapArea}>
-        <MapComponent apiKey={MyGoogleMapsAPIKey} />
+        <MapComponent />
       </div>
     </div>
   );
 }
 
 // const containerStyle = {
-//   width: "100%",
-//   height: "400px",
+//   width: "300px",
+//   height: "300px",
 // };
 
 // const center = {
@@ -48,15 +34,21 @@ function GoogleMapsArea() {
 //   lng: -122.4194,
 // };
 
-function MapComponent({ apiKey }) {
-  const [selected, setSelected] = useState(null);
+function MapComponent() {
+  const {
+    pocketList,
+    setPocketList,
+    addPocketPlace,
+    selectedPlace,
+    setSelectedPlace,
+  } = usePocketListContext();
   // const [markers, setMarkers] = useState([]);
 
   const searchBoxRef = useRef(null);
 
   const onPlacesChanged = () => {
     const places = searchBoxRef.current.getPlaces();
-
+    setSelectedPlace(places[0]);
     // const newMarkers = places.map((place) => ({
     //   position: place.geometry.location,
     // }));
@@ -64,63 +56,121 @@ function MapComponent({ apiKey }) {
     // setMarkers(newMarkers);
 
     // if (newMarkers.length === 1) {
-    setSelected(places[0]);
+    //   setSelectedPlace(places[0]);
     // }
   };
 
+  function handleAddBtnClick(listName) {
+    const newPlacePack = {
+      pocket_category: `${listName}`,
+      place_id: selectedPlace.place_id ?? pocketList.length,
+      place_name: selectedPlace.name ?? "",
+      formatted_address: selectedPlace.formatted_address ?? "",
+      business_status: selectedPlace.business_status ?? "",
+      opening_days: selectedPlace.opening_hours?.weekday_text ?? "",
+      url: selectedPlace.url ?? "",
+      website: selectedPlace.website ?? "",
+    };
+
+    if (
+      !pocketList.find((places) => places.place_id === newPlacePack.place_id)
+    ) {
+      addPocketPlace({
+        variables: newPlacePack,
+      })
+        .then(() => {
+          setPocketList([...pocketList, newPlacePack]);
+        })
+        .catch((error) => {
+          console.error("Error adding pocket place:", error);
+        });
+    } else {
+      alert("The place_id already exists in the pocketList");
+    }
+  }
+
   return (
-    <LoadScript googleMapsApiKey={apiKey} libraries={["places"]}>
-      <div className={styles.maptrying}>
-        {/* <GoogleMap
-        id="searchbox-example"
-        mapContainerStyle={containerStyle}
-        zoom={10}
-        center={center}
-      > */}
-        <StandaloneSearchBox
-          onLoad={(ref) => (searchBoxRef.current = ref)}
-          onPlacesChanged={onPlacesChanged}
-        >
-          <input
-            type="text"
-            placeholder="Search Places..."
-            style={{
-              boxSizing: `border-box`,
-              border: `1px solid transparent`,
-              width: `240px`,
-              height: `32px`,
-              marginTop: `27px`,
-              padding: `0 12px`,
-              borderRadius: `3px`,
-              boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-              fontSize: `14px`,
-              outline: `none`,
-              textOverflow: `ellipses`,
-              position: "absolute",
-              left: "50%",
-              marginLeft: "-120px",
-            }}
-          />
-        </StandaloneSearchBox>
-        {/* {markers.map((marker, index) => (
-          <Marker
-            key={index}
-            position={marker.position}
-            onClick={() => setSelected(marker)}
-          />
-        ))} */}
-        {/* </GoogleMap> */}
-        <div>
-          {selected && (
-            <div>
-              <h4>{selected.name}</h4>
-              <p>{selected.types}</p>
-              <p>{selected.url}</p>
+    <div className={styles.placesSearchArea}>
+      {/* <GoogleMap
+          id="searchbox-example"
+          mapContainerStyle={containerStyle}
+          zoom={10}
+          center={center}
+        > */}
+      <StandaloneSearchBox
+        onLoad={(ref) => (searchBoxRef.current = ref)}
+        onPlacesChanged={onPlacesChanged}
+      >
+        <input
+          type="text"
+          placeholder="Search Places..."
+          className={styles.searchBoxInput}
+        />
+      </StandaloneSearchBox>
+      {/* {markers.map((marker, index) => (
+            <Marker
+              key={index}
+              position={marker.position}
+              onClick={() => setSelectedPlace(marker)}
+            />
+          ))} */}
+      {/* </GoogleMap> */}
+      {selectedPlace && (
+        <div className={styles.placeInfos}>
+          <p className={styles.placeName}>
+            Place Name: <span>{selectedPlace.name}</span>
+          </p>
+          <p className={styles.placAddress}>
+            Address: <span>{selectedPlace.formatted_address}</span>
+          </p>
+          {selectedPlace.business_status !== "OPERATIONAL" ? (
+            <h5>{selectedPlace.business_status}</h5>
+          ) : (
+            <div className={styles.addBar}>
+              <p> Add this place to pockets :</p>
+              <div className={styles.buttons}>
+                <AddToListButtons
+                  svg={attractionsIcon}
+                  listName="Attractions"
+                  onAddBtnClick={handleAddBtnClick}
+                />
+                <AddToListButtons
+                  svg={train}
+                  listName="Transportation"
+                  onAddBtnClick={handleAddBtnClick}
+                />
+                <AddToListButtons
+                  svg={foodndrinks}
+                  listName="Food & Drinks"
+                  onAddBtnClick={handleAddBtnClick}
+                />
+                <AddToListButtons
+                  svg={house}
+                  listName="Lodgings"
+                  onAddBtnClick={handleAddBtnClick}
+                />
+                <AddToListButtons
+                  svg={othersIcon}
+                  listName="Others"
+                  onAddBtnClick={handleAddBtnClick}
+                />
+              </div>
             </div>
           )}
         </div>
+      )}
+    </div>
+  );
+}
+
+function AddToListButtons({ onAddBtnClick, svg, listName }) {
+  return (
+    <div className={styles.listsButton}>
+      <div className={styles.button} onClick={() => onAddBtnClick(listName)}>
+        <img src={svg} alt="button" />
       </div>
-    </LoadScript>
+      <p>{listName}</p>
+    </div>
   );
 }
 

@@ -7,8 +7,8 @@ import Chatroom from "../Chatroom/Chatroom";
 import logout from "../../assets/box-arrow-right.svg";
 
 function MainPage({ onLogoutClick }) {
-  const [area1, setArea1] = useState("GoogleMapsArea");
-  const [area2, setArea2] = useState("PocketListArea");
+  const [area1, setArea1] = useState("PocketListArea");
+  const [area2, setArea2] = useState("GoogleMapsArea");
 
   return (
     <div className={styles.container}>

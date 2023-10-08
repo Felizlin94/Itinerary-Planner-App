@@ -1,17 +1,24 @@
 .container {
+  width: 360px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-top: 1px;
+  margin: auto;
 
   .navbar {
     display: flex;
     height: 54px;
     width: 94%;
+    justify-content: center;
+    align-items: center;
 
     .listEntryArea {
       display: flex;
+      justify-content: space-between;
+      width: 240px;
+      margin-top: 6px;
     }
 
     .searchBar {
@@ -39,7 +46,7 @@
       }
     }
   }
-  .listArea {
+  .pocketList {
     width: 100%;
     height: 100%;
     margin-top: 10px;
@@ -50,33 +57,31 @@
     scrollbar-width: none;
     /* Firefox */
   }
-  .listArea::-webkit-scrollbar {
+  .pocketList::-webkit-scrollbar {
     width: 0px;
   }
 }
 
-.listEntryButton {
+.listSelectButton {
   width: 36px;
   height: 50px;
 
   .button {
     border: 2px solid black;
     border-radius: 3px;
-    width: 26px;
-    height: 26px;
+    width: 18px;
+    height: 18px;
+    padding: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: rgb(227, 246, 248);
     opacity: 0.8;
-
-    img {
-      width: 70%;
-      height: 70%;
-    }
   }
   .displaying {
-    background-color: rgb(161, 241, 229);
+  background-image: linear-gradient(-45deg,
+        rgb(198, 225, 248),
+        rgb(242, 211, 209));
   }
 
   p {
@@ -95,46 +100,82 @@
 .placeBar {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  height: 42px;
-  width: 320px;
-  margin: auto;
+  justify-content: space-between;
+  height: 46px;
+  width: 315px;
+  margin: 16px auto;
 
   .placeBox {
-    border: 1px solid black;
+    border: 2px solid rgb(129, 129, 129);
     border-radius: 3px;
-    width: 270px;
-    height: 32px;
+    width: 288px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: rgb(255, 255, 255);
+    background-image: linear-gradient(
+      30deg,
+      rgb(198, 225, 248),
+      rgb(242, 211, 209)
+    );
 
-    .placeTitle {
-      width: max-content;
-      height: fit-content;
-      font-size: 14px;
-      font-weight: 500;
-      margin-left: 8px;
-    }
-    .barFunctions {
+    .placeInfo {
       display: flex;
-      justify-content: space-between;
-      width: 33px;
-      margin-right: 8px;
+      flex-direction: column;
 
-      .showContent {
-        font-size: 7px;
-        width: 15px;
+      .placeTitle {
+        width: 230px;
+        height: 23px;
+        text-align: start;
+        font-size: 18px;
+        font-weight: 600;
+        margin-left: 8px;
+        overflow: hidden;
       }
-      .toEdit {
-        width: 15px;
+      .placeContent {
+        height: 14px;
+        width: 230px;
+        text-align: start;
+        font-size: 10px;
+        margin-left: 9px;
+        margin-top: -3px;
+        overflow: hidden;
+        color: rgb(117, 85, 2);
       }
+
+      .editPlaceTitle {
+        background-color: rgb(230, 230, 230);
+        width: 210px;
+        height: 21px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-left: 8px;
+        border: none;
+        outline: none;
+      }
+      .editPlaceContent {
+        background-color: rgb(239, 239, 239);
+        width: 210px;
+        height: 10px;
+        font-size: 10px;
+        margin-left: 8px;
+        margin-top: 2px;
+        border: none;
+        outline: none;
+      }
+    }
+    .editBtn {
+      width: 15px;
+      margin: 0 5px;
+    }
+    .cancelEditBtn {
+      width: 15px;
+      margin-right: 5px;
     }
   }
-  img {
-    width: 16px;
-    height: 16px;
+  .removePlaceBtn {
+    width: 14px;
+    height: 14px;
   }
 }
 
