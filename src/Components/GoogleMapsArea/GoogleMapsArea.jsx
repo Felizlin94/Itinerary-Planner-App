@@ -16,7 +16,7 @@ import { usePocketListContext } from "../../contexts/PocketListContext";
 function GoogleMapsArea() {
   return (
     <div className={styles.container}>
-      Google Map Area
+      <span>Google Maps Places Search</span>
       <div className={styles.mapArea}>
         <MapComponent />
       </div>
@@ -37,7 +37,6 @@ function GoogleMapsArea() {
 function MapComponent() {
   const {
     pocketList,
-    setPocketList,
     addPocketPlace,
     selectedPlace,
     setSelectedPlace,
@@ -73,19 +72,20 @@ function MapComponent() {
     };
 
     if (
-      !pocketList.find((places) => places.place_id === newPlacePack.place_id)
+      pocketList.find((places) => places.place_id === newPlacePack.place_id)
     ) {
+      alert("The place_id already exists in the pocketList");
+    } else {
       addPocketPlace({
         variables: newPlacePack,
       })
-        .then(() => {
-          setPocketList([...pocketList, newPlacePack]);
-        })
+        .then(
+          // setPocketList([...pocketList, newPlacePack])
+        )
         .catch((error) => {
           console.error("Error adding pocket place:", error);
         });
-    } else {
-      alert("The place_id already exists in the pocketList");
+      console.log("Gmap pocketList", pocketList);
     }
   }
 

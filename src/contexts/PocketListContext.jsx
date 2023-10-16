@@ -1,5 +1,5 @@
-import { useQuery, gql, useMutation } from "@apollo/client";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useQuery, gql, useMutation, useSubscription } from "@apollo/client";
+import { createContext, useContext, useState } from "react";
 
 const GET_POCKETLIST = gql`
   query {
@@ -51,15 +51,55 @@ const ADD_POCKETPLACE = gql`
 
 const UPDATE_POCKETPLACE = gql`
   mutation UpdatePocketPlace(
+    $pocket_category: String
     $place_id: String!
     $place_name: String
     $formatted_address: String
+    $business_status: String
+    $opening_days: [String]
+    $url: String
+    $website: String
   ) {
     updatePocketPlaceInfo(
+      pocket_category: $pocket_category
       place_id: $place_id
       place_name: $place_name
       formatted_address: $formatted_address
+      business_status: $business_status
+      opening_days: $opening_days
+      url: $url
+      website: $website
     ) {
+      pocket_category
+      place_id
+      place_name
+      formatted_address
+      business_status
+      opening_days
+      url
+      website
+    }
+  }
+`;
+
+const POCKETLIST_ADDED_SUBSCRIPTION = gql`
+  subscription OnPocketListAdded {
+    pocketListAdded {
+      pocket_category
+      place_id
+      place_name
+      formatted_address
+      business_status
+      opening_days
+      url
+      website
+    }
+  }
+`;
+
+const POCKETLIST_UPDATED_SUBSCRIPTION = gql`
+  subscription OnPocketListUpdated {
+    pocketListUpdated {
       pocket_category
       place_id
       place_name
@@ -85,22 +125,25 @@ const PocketListContext = createContext();
 export const PocketListProvider = ({ children }) => {
   const [pocketList, setPocketList] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState();
-
+  const [pocketListCategory, setPocketListCategory] = useState([]);
   const [addPocketPlace] = useMutation(ADD_POCKETPLACE);
   const [updatePocketPlace] = useMutation(UPDATE_POCKETPLACE);
   const [removePocketPlace] = useMutation(REMOVE_POCKETPLACE);
+  const [displaying, setDisplaying] = useState("Attractions");
 
   const {
     loading: pocketListLoading,
     error: pocketListError,
     data: pocketListData,
-  } = useQuery(GET_POCKETLIST, { pollInterval: 500 });
+  } = useQuery(GET_POCKETLIST);
 
-  useEffect(() => {
-    if (pocketListData) {
-      setPocketList(pocketListData.placesPocketList);
-    }
-  }, [pocketListData, pocketList, setPocketList, setSelectedPlace]);
+  const { data: subscriptionPocketListAddedData } = useSubscription(
+    POCKETLIST_ADDED_SUBSCRIPTION
+  );
+
+  const { data: subscriptionPocketListUpdatedData } = useSubscription(
+    POCKETLIST_UPDATED_SUBSCRIPTION
+  );
 
   if (pocketListLoading) {
     return <p>Loading...</p>;
@@ -110,13 +153,20 @@ export const PocketListProvider = ({ children }) => {
   }
 
   const value = {
+    pocketListData,
     pocketList,
     setPocketList,
     addPocketPlace,
     updatePocketPlace,
     removePocketPlace,
+    subscriptionPocketListAddedData,
+    subscriptionPocketListUpdatedData,
     selectedPlace,
     setSelectedPlace,
+    pocketListCategory,
+    setPocketListCategory,
+    displaying,
+    setDisplaying,
   };
 
   return (

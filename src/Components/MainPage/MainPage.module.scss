@@ -33,8 +33,8 @@
 
     .divider {
       height: 1px;
-      width: 94%;
-      border-bottom: 1px rgb(27, 98, 152) dashed;
+      width: 100%;
+      border-bottom: 1px rgb(171, 120, 17) solid;
       margin: 3px auto;
     }
 
@@ -98,16 +98,20 @@
 
   .button {
     display: flex;
-    border: 1px solid rgb(155, 95, 0);
-    color: rgb(155, 95, 0);
+    border: 1px solid rgb(111, 196, 200);
+    color: rgb(85, 114, 164);
     border-radius: 3px;
     min-width: max-content;
     min-height: max-content;
     padding: 0.3vh 2vw;
     font-size: 12px;
+    font-weight: 500;
     align-items: center;
     justify-content: center;
     margin: auto 0.8vw;
+    background-image: linear-gradient(0deg,
+          rgb(206, 228, 238),
+          #eeeeee);
   }
 
   .button:hover {

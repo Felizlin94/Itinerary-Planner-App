@@ -1,4 +1,5 @@
 import styles from "./LoginPage.module.scss";
+import appLogo from "../../assets/appLogo.svg";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../../contexts/UserAccountContext";
 
@@ -88,6 +89,7 @@ function LoginPage({ setPage }) {
 
   return (
     <div className={styles.container}>
+      <img className={styles.button} src={appLogo} alt="logo" />
       <LoginArea
         onLoginClick={handleLoginClick}
         onLoginUsername={onLoginUsername}

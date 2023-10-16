@@ -11,18 +11,81 @@ import cancelButton from "../../assets/cancelButton.svg";
 import editPencil from "../../assets/editPencil.svg";
 import saveIcon from "../../assets/saveIcon.svg";
 import train from "../../assets/train.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePocketListContext } from "../../contexts/PocketListContext";
 
 function PocketListArea() {
-  const { pocketList } = usePocketListContext();
+  const {
+    pocketListData,
+    pocketList,
+    setPocketList,
+    subscriptionPocketListAddedData,
+    subscriptionPocketListUpdatedData,
+    pocketListCategory,
+    setPocketListCategory,
+    displaying,
+    setDisplaying,
+  } = usePocketListContext();
 
-  const [displaying, setDisplaying] = useState("Attractions");
-  const defaultCategory = pocketList.filter(
-    (place) => place.pocket_category === "Attractions"
-  );
-  const [pocketListCategory, setPocketListCategory] = useState(defaultCategory);
   // const [searchText, setSearchText] = useState("");
+
+  useEffect(() => {
+    if (pocketListData) {
+      setPocketList(pocketListData.placesPocketList);
+      const defaultCategory = pocketList.filter(
+        (place) => place.pocket_category === displaying
+      );
+      setPocketListCategory(defaultCategory);
+    }
+  }, [
+    pocketListData,
+    pocketList,
+    setPocketList,
+    setPocketListCategory,
+    displaying,
+  ]);
+
+  useEffect(() => {
+    if (subscriptionPocketListAddedData) {
+      pocketList.push(subscriptionPocketListAddedData.pocketListAdded);
+      const currentCategory = pocketList.filter(
+        (place) => place.pocket_category === displaying
+      );
+      setPocketListCategory(currentCategory);
+    }
+  }, [
+    subscriptionPocketListAddedData,
+    pocketList,
+    setPocketList,
+    setPocketListCategory,
+    displaying,
+  ]);
+
+  useEffect(() => {
+    if (subscriptionPocketListUpdatedData) {
+      const updatedPlace = subscriptionPocketListUpdatedData.pocketListUpdated;
+
+      const indexToReplace = pocketList.findIndex(
+        (place) => place.place_id === updatedPlace.place_id
+      );
+      pocketList.splice(indexToReplace, 1, updatedPlace);
+
+      const currentCategory = pocketList.filter(
+        (place) => place.pocket_category === displaying
+      );
+      setPocketListCategory(currentCategory);
+    }
+  }, [
+    subscriptionPocketListAddedData,
+    subscriptionPocketListUpdatedData,
+    pocketList,
+    setPocketList,
+    pocketListData,
+    setPocketListCategory,
+    displaying,
+  ]);
+
+  console.log("PArea pocketList", pocketList);
 
   function handleListBtnClick(listName) {
     setDisplaying(`${listName}`);
@@ -30,7 +93,6 @@ function PocketListArea() {
       (place) => place.pocket_category === `${listName}`
     );
     setPocketListCategory(selectedCategory);
-    console.log(pocketListCategory);
   }
 
   // const handleSearchTextChange = (event) => {
@@ -115,7 +177,13 @@ function ListSelectButton({ displaying, onListBtnClick, svg, listName }) {
 }
 
 function PlaceBar({ placeId, placeName, placeContent }) {
-  const { updatePocketPlace, removePocketPlace } = usePocketListContext();
+  const {
+    pocketList,
+    updatePocketPlace,
+    removePocketPlace,
+    setPocketListCategory,
+    displaying,
+  } = usePocketListContext();
   const [editMode, setEditMode] = useState(false);
   const [newPlaceName, setNewPlaceName] = useState("");
   const [newPlaceContent, setNewPlaceContent] = useState("");
@@ -130,21 +198,26 @@ function PlaceBar({ placeId, placeName, placeContent }) {
     if (newPlaceName.length === 0) {
       alert("Please enter place name");
     } else {
+      const index = pocketList.findIndex((place) => place.place_id === placeId);
+
       updatePocketPlace({
         variables: {
+          ...pocketList[index],
           place_id: placeId,
           place_name: newPlaceName,
           formatted_address: newPlaceContent,
         },
       })
-        .then((response) => {
-          console.log(response.data.updatePocketPlaceInfo);
+        .then(() => {
+          console.log(
+            `updated pocketList with ID: ${placeId}`,
+            pocketList[index]
+          );
           setEditMode(false);
         })
         .catch((error) => {
           console.error(error);
         });
-      console.log(`Saving changes for place with ID: ${placeId}`);
     }
   }
 
@@ -165,6 +238,15 @@ function PlaceBar({ placeId, placeName, placeContent }) {
           place_id: placeId,
         },
       });
+
+      const indexToRemove = pocketList.findIndex(
+        (place) => place.place_id === placeId
+      );
+      pocketList.splice(indexToRemove, 1);
+      const currentCategory = pocketList.filter(
+        (place) => place.pocket_category === displaying
+      );
+      setPocketListCategory(currentCategory);
     }
   }
 

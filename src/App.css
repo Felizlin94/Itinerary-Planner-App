@@ -4,8 +4,8 @@
   margin: auto;
   background-image: linear-gradient(
     -45deg,
-    rgb(231, 243, 210),
-    rgb(212, 243, 255)
+    rgb(192, 224, 232),
+    #FFF8DD
   );
   width: 100%;
   height: 100%;
