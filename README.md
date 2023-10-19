@@ -6,8 +6,10 @@
 
 ## Getting Started
 
-### `git clone https://github.com/Felizlin94/Itinerary-Planner-App.git`
+#### `git clone https://github.com/Felizlin94/Itinerary-Planner-App.git`
 
-### `npm install`
+#### `cd Itinerary-Planner-App`
 
-### `npm start`
+#### `npm install`
+
+#### `npm start`
