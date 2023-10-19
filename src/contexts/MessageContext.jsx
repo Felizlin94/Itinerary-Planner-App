@@ -51,11 +51,13 @@ export const MessageProvider = ({ children }) => {
   const [messageBase, setMessageBase] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [sendMessage] = useMutation(SEND_MESSAGE);
+
   const {
     loading: messagesLoading,
     error: messagesError,
     data: messagesData,
   } = useQuery(GET_MESSAGES);
+  
   const { data: subscriptionMessagesData } = useSubscription(
     MESSAGE_ADDED_SUBSCRIPTION
   );

@@ -85,7 +85,6 @@ function PocketListArea() {
     displaying,
   ]);
 
-  console.log("PArea pocketList", pocketList);
 
   function handleListBtnClick(listName) {
     setDisplaying(`${listName}`);

@@ -8,6 +8,7 @@
 
   p {
     color: rgb(15, 84, 187);
+    font-size: 11px;
     span {
       font-weight: 500;
     }
@@ -17,8 +18,8 @@
 
   .chatArea {
     width: 356px;
-    margin-top: 6px;
-    font-size: 16px;
+    margin-top: 20px;
+    font-size: 15px;
     overflow: auto;
     overflow-x: hidden;
     -ms-overflow-style: none;
