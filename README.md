@@ -1,35 +1,13 @@
 # Read Me
 
 
-## Available Scripts
+## Itinerary-Planner Web App
+![image](https://github.com/Felizlin94/Itinerary-Planner-App/blob/main/Project%20screenshot.png)
 
+## Getting Started
+
+### `git clone https://github.com/Felizlin94/Itinerary-Planner-App.git`
+
+### `npm install`
 
 ### `npm start`
-
-
-
-### `npm test`
-
-
-### `npm run build`
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-## Learn More
-
-
-
-### Code Splitting
-
-
-### Analyzing the Bundle Size
-
-### Making a Progressive Web App
-
-### Advanced Configuration
-
-### Deployment
-
-### `npm run build` fails to minify
