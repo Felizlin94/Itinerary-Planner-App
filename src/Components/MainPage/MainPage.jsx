@@ -52,19 +52,19 @@ function SubArea({ area }) {
 function Buttons({ setArea }) {
   function handlethe1Click() {
     setArea("PocketListArea");
-    console.log("PocketListArea");
+    console.log("Welcome to PocketList Area");
   }
   function handlethe2Click() {
     setArea("ItineraryArea");
-    console.log("ItineraryArea");
+    console.log("Welcome to Itinerary Area");
   }
   function handlethe3Click() {
     setArea("GoogleMapsArea");
-    console.log("GoogleMapsArea");
+    console.log("Welcome to GoogleMaps Area");
   }
   function handlethe4Click() {
     setArea("Chatroom");
-    console.log("Chatroom");
+    console.log("Welcome to Chatroom");
   }
 
   return (

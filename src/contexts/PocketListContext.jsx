@@ -1,4 +1,4 @@
-import { useQuery, gql, useMutation, useSubscription } from "@apollo/client";
+import { useQuery, gql, useMutation } from "@apollo/client";
 import { createContext, useContext, useState } from "react";
 
 const GET_POCKETLIST = gql`
@@ -82,36 +82,6 @@ const UPDATE_POCKETPLACE = gql`
   }
 `;
 
-const POCKETLIST_ADDED_SUBSCRIPTION = gql`
-  subscription OnPocketListAdded {
-    pocketListAdded {
-      pocket_category
-      place_id
-      place_name
-      formatted_address
-      business_status
-      opening_days
-      url
-      website
-    }
-  }
-`;
-
-const POCKETLIST_UPDATED_SUBSCRIPTION = gql`
-  subscription OnPocketListUpdated {
-    pocketListUpdated {
-      pocket_category
-      place_id
-      place_name
-      formatted_address
-      business_status
-      opening_days
-      url
-      website
-    }
-  }
-`;
-
 const REMOVE_POCKETPLACE = gql`
   mutation RemovePocketPlace($place_id: String!) {
     removePocketPlace(place_id: $place_id) {
@@ -125,7 +95,6 @@ const PocketListContext = createContext();
 export const PocketListProvider = ({ children }) => {
   const [pocketList, setPocketList] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState();
-  const [pocketListCategory, setPocketListCategory] = useState([]);
   const [addPocketPlace] = useMutation(ADD_POCKETPLACE);
   const [updatePocketPlace] = useMutation(UPDATE_POCKETPLACE);
   const [removePocketPlace] = useMutation(REMOVE_POCKETPLACE);
@@ -135,15 +104,9 @@ export const PocketListProvider = ({ children }) => {
     loading: pocketListLoading,
     error: pocketListError,
     data: pocketListData,
-  } = useQuery(GET_POCKETLIST);
-
-  const { data: subscriptionPocketListAddedData } = useSubscription(
-    POCKETLIST_ADDED_SUBSCRIPTION
-  );
-
-  const { data: subscriptionPocketListUpdatedData } = useSubscription(
-    POCKETLIST_UPDATED_SUBSCRIPTION
-  );
+  } = useQuery(GET_POCKETLIST, {
+    pollInterval: 1000,
+  });
 
   if (pocketListLoading) {
     return <p>Loading...</p>;
@@ -159,12 +122,8 @@ export const PocketListProvider = ({ children }) => {
     addPocketPlace,
     updatePocketPlace,
     removePocketPlace,
-    subscriptionPocketListAddedData,
-    subscriptionPocketListUpdatedData,
     selectedPlace,
     setSelectedPlace,
-    pocketListCategory,
-    setPocketListCategory,
     displaying,
     setDisplaying,
   };

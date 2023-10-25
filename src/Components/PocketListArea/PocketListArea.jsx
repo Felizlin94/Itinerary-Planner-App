@@ -19,10 +19,6 @@ function PocketListArea() {
     pocketListData,
     pocketList,
     setPocketList,
-    subscriptionPocketListAddedData,
-    subscriptionPocketListUpdatedData,
-    pocketListCategory,
-    setPocketListCategory,
     displaying,
     setDisplaying,
   } = usePocketListContext();
@@ -32,66 +28,11 @@ function PocketListArea() {
   useEffect(() => {
     if (pocketListData) {
       setPocketList(pocketListData.placesPocketList);
-      const defaultCategory = pocketList.filter(
-        (place) => place.pocket_category === displaying
-      );
-      setPocketListCategory(defaultCategory);
     }
-  }, [
-    pocketListData,
-    pocketList,
-    setPocketList,
-    setPocketListCategory,
-    displaying,
-  ]);
-
-  useEffect(() => {
-    if (subscriptionPocketListAddedData) {
-      pocketList.push(subscriptionPocketListAddedData.pocketListAdded);
-      const currentCategory = pocketList.filter(
-        (place) => place.pocket_category === displaying
-      );
-      setPocketListCategory(currentCategory);
-    }
-  }, [
-    subscriptionPocketListAddedData,
-    pocketList,
-    setPocketList,
-    setPocketListCategory,
-    displaying,
-  ]);
-
-  useEffect(() => {
-    if (subscriptionPocketListUpdatedData) {
-      const updatedPlace = subscriptionPocketListUpdatedData.pocketListUpdated;
-
-      const indexToReplace = pocketList.findIndex(
-        (place) => place.place_id === updatedPlace.place_id
-      );
-      pocketList.splice(indexToReplace, 1, updatedPlace);
-
-      const currentCategory = pocketList.filter(
-        (place) => place.pocket_category === displaying
-      );
-      setPocketListCategory(currentCategory);
-    }
-  }, [
-    subscriptionPocketListAddedData,
-    subscriptionPocketListUpdatedData,
-    pocketList,
-    setPocketList,
-    pocketListData,
-    setPocketListCategory,
-    displaying,
-  ]);
-
+  }, [pocketListData, setPocketList]);
 
   function handleListBtnClick(listName) {
     setDisplaying(`${listName}`);
-    const selectedCategory = pocketList.filter(
-      (place) => place.pocket_category === `${listName}`
-    );
-    setPocketListCategory(selectedCategory);
   }
 
   // const handleSearchTextChange = (event) => {
@@ -146,14 +87,16 @@ function PocketListArea() {
         </div> */}
       </div>
       <div className={styles.pocketList}>
-        {pocketListCategory.map((item) => (
-          <PlaceBar
-            key={item.place_id}
-            placeId={item.place_id}
-            placeName={item.place_name}
-            placeContent={item.formatted_address}
-          />
-        ))}
+        {pocketList
+          .filter((place) => place.pocket_category === displaying)
+          .map((item) => (
+            <PlaceBar
+              key={item.place_id}
+              placeId={item.place_id}
+              placeName={item.place_name}
+              placeContent={item.formatted_address}
+            />
+          ))}
       </div>
     </div>
   );
@@ -176,13 +119,8 @@ function ListSelectButton({ displaying, onListBtnClick, svg, listName }) {
 }
 
 function PlaceBar({ placeId, placeName, placeContent }) {
-  const {
-    pocketList,
-    updatePocketPlace,
-    removePocketPlace,
-    setPocketListCategory,
-    displaying,
-  } = usePocketListContext();
+  const { pocketList, updatePocketPlace, removePocketPlace } =
+    usePocketListContext();
   const [editMode, setEditMode] = useState(false);
   const [newPlaceName, setNewPlaceName] = useState("");
   const [newPlaceContent, setNewPlaceContent] = useState("");
@@ -208,10 +146,6 @@ function PlaceBar({ placeId, placeName, placeContent }) {
         },
       })
         .then(() => {
-          console.log(
-            `updated pocketList with ID: ${placeId}`,
-            pocketList[index]
-          );
           setEditMode(false);
         })
         .catch((error) => {
@@ -242,10 +176,6 @@ function PlaceBar({ placeId, placeName, placeContent }) {
         (place) => place.place_id === placeId
       );
       pocketList.splice(indexToRemove, 1);
-      const currentCategory = pocketList.filter(
-        (place) => place.pocket_category === displaying
-      );
-      setPocketListCategory(currentCategory);
     }
   }
 

@@ -47,7 +47,6 @@ function Chatroom() {
         .catch((error) => {
           console.error("Error sending message:", error);
         });
-      console.log("newMessagePack", newMessagePack);
     }
   }
 
@@ -58,6 +57,12 @@ function Chatroom() {
     }
   };
 
+  function presentLocalTime(sendingTime, offset) {
+    const [hours, minutes] = sendingTime.split(":");
+    const adjustedHours = (parseInt(hours) + offset) % 24;
+    return `${adjustedHours.toString().padStart(2, "0")}:${minutes}`;
+  }
+
   return (
     <div className={styles.container}>
       <p>
@@ -65,18 +70,20 @@ function Chatroom() {
       </p>
       <ScrollToBottom className={styles.chatArea}>
         {messageBase.map((messages) => {
+          const adjustedSendingTime = presentLocalTime(messages.sendingTime, 8);
+
           return messages.username === currentAccount.username ? (
             <SelfMessage
               key={messages.messageId}
               message={messages.message}
-              sendingTime={messages.sendingTime}
+              sendingTime={adjustedSendingTime}
             />
           ) : (
             <FriendMessage
               key={messages.messageId}
               FriendName={messages.username}
               message={messages.message}
-              sendingTime={messages.sendingTime}
+              sendingTime={adjustedSendingTime}
             />
           );
         })}

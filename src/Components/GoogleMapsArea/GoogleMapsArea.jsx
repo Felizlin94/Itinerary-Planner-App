@@ -18,7 +18,7 @@ function GoogleMapsArea() {
     <div className={styles.container}>
       <span>Google Maps Places Search</span>
       <div className={styles.mapArea}>
-        <MapComponent />
+        <PlacesSearch />
       </div>
     </div>
   );
@@ -34,12 +34,13 @@ function GoogleMapsArea() {
 //   lng: -122.4194,
 // };
 
-function MapComponent() {
+function PlacesSearch() {
   const {
     pocketList,
     addPocketPlace,
     selectedPlace,
     setSelectedPlace,
+    setDisplaying,
   } = usePocketListContext();
   // const [markers, setMarkers] = useState([]);
 
@@ -79,15 +80,23 @@ function MapComponent() {
       addPocketPlace({
         variables: newPlacePack,
       })
-        .then(
-          // setPocketList([...pocketList, newPlacePack])
-        )
+        .then(() => {
+          pocketList.push(newPlacePack);
+          setDisplaying(newPlacePack.pocket_category);
+        })
         .catch((error) => {
           console.error("Error adding pocket place:", error);
         });
-      console.log("Gmap pocketList", pocketList);
     }
   }
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      const places = searchBoxRef.current.getPlaces();
+      setSelectedPlace(places[0]);
+    }
+  };
 
   return (
     <div className={styles.placesSearchArea}>
@@ -105,6 +114,7 @@ function MapComponent() {
           type="text"
           placeholder="Search Places..."
           className={styles.searchBoxInput}
+          onKeyDown={handleKeyPress}
         />
       </StandaloneSearchBox>
       {/* {markers.map((marker, index) => (
@@ -123,40 +133,41 @@ function MapComponent() {
           <p className={styles.placAddress}>
             Address: <span>{selectedPlace.formatted_address}</span>
           </p>
-          {selectedPlace.business_status !== "OPERATIONAL" ? (
+          {selectedPlace.business_status !== "OPERATIONAL" && (
             <h5>{selectedPlace.business_status}</h5>
-          ) : (
-            <div className={styles.addBar}>
-              <p> Add this place to pockets :</p>
-              <div className={styles.buttons}>
-                <AddToListButtons
-                  svg={attractionsIcon}
-                  listName="Attractions"
-                  onAddBtnClick={handleAddBtnClick}
-                />
-                <AddToListButtons
-                  svg={train}
-                  listName="Transportation"
-                  onAddBtnClick={handleAddBtnClick}
-                />
-                <AddToListButtons
-                  svg={foodndrinks}
-                  listName="Food & Drinks"
-                  onAddBtnClick={handleAddBtnClick}
-                />
-                <AddToListButtons
-                  svg={house}
-                  listName="Lodgings"
-                  onAddBtnClick={handleAddBtnClick}
-                />
-                <AddToListButtons
-                  svg={othersIcon}
-                  listName="Others"
-                  onAddBtnClick={handleAddBtnClick}
-                />
-              </div>
-            </div>
           )}
+          {/* ) : ( */}
+          <div className={styles.addBar}>
+            <p> Add this place to pockets :</p>
+            <div className={styles.buttons}>
+              <AddToListButtons
+                svg={attractionsIcon}
+                listName="Attractions"
+                onAddBtnClick={handleAddBtnClick}
+              />
+              <AddToListButtons
+                svg={train}
+                listName="Transportation"
+                onAddBtnClick={handleAddBtnClick}
+              />
+              <AddToListButtons
+                svg={foodndrinks}
+                listName="Food & Drinks"
+                onAddBtnClick={handleAddBtnClick}
+              />
+              <AddToListButtons
+                svg={house}
+                listName="Lodgings"
+                onAddBtnClick={handleAddBtnClick}
+              />
+              <AddToListButtons
+                svg={othersIcon}
+                listName="Others"
+                onAddBtnClick={handleAddBtnClick}
+              />
+            </div>
+          </div>
+          {/* )} */}
         </div>
       )}
     </div>
