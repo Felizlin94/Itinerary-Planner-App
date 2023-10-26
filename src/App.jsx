@@ -15,7 +15,7 @@ const GET_GOOGLE_MAPS_API_KEY = gql`
 `;
 
 function App() {
-  const [page, setPage] = useState("mainPage");
+  const [page, setPage] = useState("loginPage");
   const { setOnLoginUsername, setOnLoginPassword } = useUserContext();
 
   const {
