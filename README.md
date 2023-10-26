@@ -17,7 +17,7 @@
 #### Enter `http://localhost:3000/` in the browser
 
 ### Usage
-**1. Users will first enter the login page, please begin by log in to enjoy the full functionality of the application;**
+**1. Users will first enter the login page; please begin by logging in to enjoy the full functionality of the application.**
 
 **2. This application provides three default user accounts with the usernames 'Qoo,' 'Anya,' or 'Snoopy,' all using the password '123.' Alternatively, you can create new accounts to access the application.**
 
