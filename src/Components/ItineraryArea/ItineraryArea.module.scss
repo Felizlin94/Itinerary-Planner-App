@@ -27,9 +27,9 @@
       justify-content: space-between;
       color: rgb(19, 76, 161);
       background-image: linear-gradient(
-        180deg,
-        rgb(198, 225, 248),
-        rgb(241, 227, 161)
+        45deg,
+        rgb(252, 249, 240),
+        rgb(234, 220, 175)
       );
 
       .placeInfo {
@@ -64,7 +64,7 @@
   }
 
   .homing {
-    margin: 0px auto;
+    margin: -5px auto 0 auto;
   }
   span {
     color: rgb(0, 0, 0);
