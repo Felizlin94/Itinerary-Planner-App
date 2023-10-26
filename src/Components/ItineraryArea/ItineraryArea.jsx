@@ -18,7 +18,7 @@ function ItineraryArea() {
         />
       ))}
       <img className={styles.homing} src={homing} alt="home" />
-      <span> Functions in the Itinerary are developing...</span>
+      <span> Functions in Itinerary Area are under development...</span>
     </div>
   );
 }
