@@ -35,8 +35,8 @@ const USER_ACCOUNT_CREATED_SUBSCRIPTION = gql`
 
 export const UserProvider = ({ children }) => {
   const [userAccounts, setUserAccounts] = useState([]);
-  const [onLoginUsername, setOnLoginUsername] = useState("");
-  const [onLoginPassword, setOnLoginPassword] = useState("");
+  const [onLoginUsername, setOnLoginUsername] = useState("Qoo");
+  const [onLoginPassword, setOnLoginPassword] = useState("123");
   const [newUsername, setNewUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [currentAccount, setCurrentAccount] = useState({ username: "Qoo" });
