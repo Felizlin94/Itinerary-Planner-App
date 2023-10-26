@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Itinerary-Planner-App/static/css/main.df5775e0.css",
-    "main.js": "/Itinerary-Planner-App/static/js/main.0a2954b8.js",
+    "main.js": "/Itinerary-Planner-App/static/js/main.04f1f20c.js",
     "static/js/482.3f6b7513.chunk.js": "/Itinerary-Planner-App/static/js/482.3f6b7513.chunk.js",
     "static/js/230.d29e12f3.chunk.js": "/Itinerary-Planner-App/static/js/230.d29e12f3.chunk.js",
     "static/js/430.87df1895.chunk.js": "/Itinerary-Planner-App/static/js/430.87df1895.chunk.js",
@@ -27,10 +27,10 @@
     "static/media/movingLine.svg": "/Itinerary-Planner-App/static/media/movingLine.f8f58c1217f162bfb7af95891048fea0.svg",
     "static/media/othersIcon.svg": "/Itinerary-Planner-App/static/media/othersIcon.46d6a76f6b7a6424efc2ef06e75aec1f.svg",
     "main.df5775e0.css.map": "/Itinerary-Planner-App/static/css/main.df5775e0.css.map",
-    "main.0a2954b8.js.map": "/Itinerary-Planner-App/static/js/main.0a2954b8.js.map"
+    "main.04f1f20c.js.map": "/Itinerary-Planner-App/static/js/main.04f1f20c.js.map"
   },
   "entrypoints": [
     "static/css/main.df5775e0.css",
-    "static/js/main.0a2954b8.js"
+    "static/js/main.04f1f20c.js"
   ]
 }
