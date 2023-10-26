@@ -109,7 +109,7 @@ export const PocketListProvider = ({ children }) => {
   });
 
   if (pocketListLoading) {
-    return <p>Loading...</p>;
+    return;
   } else if (pocketListError) {
     console.error("pocketList Error:", pocketListError.message);
     return <p>Error: {pocketListError.message}</p>;

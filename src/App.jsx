@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useUserContext } from "./contexts/UserAccountContext";
 import { LoadScript } from "@react-google-maps/api";
 import { useQuery, gql } from "@apollo/client";
+import felizLogo from "./assets/feliz-logo.svg";
 
 const GET_GOOGLE_MAPS_API_KEY = gql`
   query {
@@ -24,7 +25,7 @@ function App() {
     data: apiKeyData,
   } = useQuery(GET_GOOGLE_MAPS_API_KEY);
 
-  if (apiKeyLoading) return <p>Loading...</p>;
+  if (apiKeyLoading) return <img className="loadingICon" src={felizLogo} alt="" />;
   if (apiKeyError) return <p>Error : {apiKeyError.message}</p>;
 
   const MyGoogleMapsAPIKey = apiKeyData.googleMapsAPIKey[0].apiKey;

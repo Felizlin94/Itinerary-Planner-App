@@ -57,14 +57,14 @@ export const MessageProvider = ({ children }) => {
     error: messagesError,
     data: messagesData,
   } = useQuery(GET_MESSAGES);
-  
+
   const { data: subscriptionMessagesData } = useSubscription(
     MESSAGE_ADDED_SUBSCRIPTION
   );
 
   const { currentAccount } = useUserContext();
 
-  if (messagesLoading) return <p>Loading...</p>;
+  if (messagesLoading) return;
   if (messagesError) return <p>Error : {messagesError.message}</p>;
 
   const getCurrentTime = () => {
@@ -87,8 +87,6 @@ export const MessageProvider = ({ children }) => {
     newMessage,
     setNewMessage,
     sendMessage,
-    messagesLoading,
-    messagesError,
     messagesData,
     subscriptionMessagesData,
     newMessagePack,

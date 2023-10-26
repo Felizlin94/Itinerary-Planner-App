@@ -53,7 +53,7 @@ export const UserProvider = ({ children }) => {
     USER_ACCOUNT_CREATED_SUBSCRIPTION
   );
 
-  if (userAccountsLoading) return <p>Loading...</p>;
+  if (userAccountsLoading) return;
   if (userAccountsError) return <p>Error : {userAccountsError.message}</p>;
 
   const newUserAccount = {
