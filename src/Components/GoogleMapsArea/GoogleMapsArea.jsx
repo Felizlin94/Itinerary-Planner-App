@@ -46,15 +46,15 @@ function PlacesSearch() {
 
   const searchBoxRef = useRef(null);
 
-  const onPlacesChanged = () => {
+  const handlePlacesChanged = () => {
     const places = searchBoxRef.current.getPlaces();
-    setSelectedPlace(places[0]);
+    if (places) {
+      setSelectedPlace(places[0]);
+    }
     // const newMarkers = places.map((place) => ({
     //   position: place.geometry.location,
     // }));
-
     // setMarkers(newMarkers);
-
     // if (newMarkers.length === 1) {
     //   setSelectedPlace(places[0]);
     // }
@@ -90,14 +90,6 @@ function PlacesSearch() {
     }
   }
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      const places = searchBoxRef.current.getPlaces();
-      setSelectedPlace(places[0]);
-    }
-  };
-
   return (
     <div className={styles.placesSearchArea}>
       {/* <GoogleMap
@@ -108,13 +100,12 @@ function PlacesSearch() {
         > */}
       <StandaloneSearchBox
         onLoad={(ref) => (searchBoxRef.current = ref)}
-        onPlacesChanged={onPlacesChanged}
+        onPlacesChanged={handlePlacesChanged}
       >
         <input
           type="text"
           placeholder="Search Places..."
           className={styles.searchBoxInput}
-          onKeyDown={handleKeyPress}
         />
       </StandaloneSearchBox>
       {/* {markers.map((marker, index) => (
