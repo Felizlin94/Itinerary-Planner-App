@@ -37,4 +37,4 @@
 ### About Google Maps API Key:
 If you clone this project as a developer, and want to experience the full functionality provided by Google Maps API in the App, you should apply your own Google Maps API key first, and use the key in App.jsx after obtaining it.
 Please browse here for details: 
-https://developers.google.com/maps/documentation/places/web-service/cloud-setup?hl=zh-tw
+https://developers.google.com/maps/documentation/places/web-service/cloud-setup
